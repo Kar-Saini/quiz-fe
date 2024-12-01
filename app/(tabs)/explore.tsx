@@ -1,109 +1,194 @@
-import { StyleSheet, Image, Platform } from 'react-native';
+import React from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  ImageBackground,
+  TouchableOpacity,
+  FlatList,
+} from "react-native";
+import { StatusBar } from "expo-status-bar";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
 
-import { Collapsible } from '@/components/Collapsible';
-import { ExternalLink } from '@/components/ExternalLink';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-import { IconSymbol } from '@/components/ui/IconSymbol';
+// Mock quiz data (replace with actual data in a real app)
+const quizzes = [
+  {
+    id: "1",
+    title: "Math Wizards",
+    category: "Mathematics",
+    price: 5.99,
+    startTime: "2023-06-15T14:00:00Z",
+    duration: 60,
+    questionCount: 30,
+  },
+  {
+    id: "2",
+    title: "Science Explorer",
+    category: "Science",
+    price: 0,
+    startTime: "2023-06-16T10:00:00Z",
+    duration: 45,
+    questionCount: 25,
+  },
+  {
+    id: "3",
+    title: "History Buff",
+    category: "History",
+    price: 3.99,
+    startTime: "2023-06-17T15:30:00Z",
+    duration: 90,
+    questionCount: 40,
+  },
+  {
+    id: "4",
+    title: "Language Master",
+    category: "Languages",
+    price: 7.99,
+    startTime: "2023-06-18T09:00:00Z",
+    duration: 75,
+    questionCount: 35,
+  },
+  {
+    id: "5",
+    title: "Tech Genius",
+    category: "Technology",
+    price: 0,
+    startTime: "2023-06-19T13:00:00Z",
+    duration: 60,
+    questionCount: 30,
+  },
+];
 
-export default function TabTwoScreen() {
+const QuizCard = ({ quiz }) => (
+  <TouchableOpacity style={styles.quizCard}>
+    <LinearGradient
+      colors={["rgba(103, 58, 183, 0.8)", "rgba(81, 45, 168, 1)"]}
+      style={styles.cardGradient}
+    >
+      <Text style={styles.quizTitle}>{quiz.title}</Text>
+      <Text style={styles.quizCategory}>{quiz.category}</Text>
+      <View style={styles.quizInfo}>
+        <View style={styles.infoItem}>
+          <MaterialCommunityIcons
+            name="currency-usd"
+            size={20}
+            color="#FFD700"
+          />
+          <Text style={styles.infoText}>
+            {quiz.price === 0 ? "Free" : `$${quiz.price.toFixed(2)}`}
+          </Text>
+        </View>
+        <View style={styles.infoItem}>
+          <MaterialCommunityIcons
+            name="clock-outline"
+            size={20}
+            color="#4CAF50"
+          />
+          <Text style={styles.infoText}>
+            {new Date(quiz.startTime).toLocaleString()}
+          </Text>
+        </View>
+        <View style={styles.infoItem}>
+          <MaterialCommunityIcons name="timer-sand" size={20} color="#2196F3" />
+          <Text style={styles.infoText}>{quiz.duration} mins</Text>
+        </View>
+        <View style={styles.infoItem}>
+          <MaterialCommunityIcons
+            name="help-circle-outline"
+            size={20}
+            color="#FF5722"
+          />
+          <Text style={styles.infoText}>{quiz.questionCount} questions</Text>
+        </View>
+      </View>
+    </LinearGradient>
+  </TouchableOpacity>
+);
+
+export default function QuizExplorerScreen() {
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
-      headerImage={
-        <IconSymbol
-          size={310}
-          color="#808080"
-          name="chevron.left.forwardslash.chevron.right"
-          style={styles.headerImage}
+    <ImageBackground
+      source={{
+        uri: "https://images.unsplash.com/photo-1557683316-973673baf926?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2029&q=80",
+      }}
+      style={styles.backgroundImage}
+    >
+      <LinearGradient
+        colors={["rgba(103, 58, 183, 0.7)", "rgba(81, 45, 168, 0.9)"]}
+        style={styles.container}
+      >
+        <StatusBar style="light" />
+        <View style={styles.header}>
+          <Text style={styles.headerTitle}>Explore Quizzes</Text>
+        </View>
+        <FlatList
+          data={quizzes}
+          renderItem={({ item }) => <QuizCard quiz={item} />}
+          keyExtractor={(item) => item.id}
+          contentContainerStyle={styles.quizList}
         />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Explore</ThemedText>
-      </ThemedView>
-      <ThemedText>This app includes example code to help you get started.</ThemedText>
-      <Collapsible title="File-based routing">
-        <ThemedText>
-          This app has two screens:{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/explore.tsx</ThemedText>
-        </ThemedText>
-        <ThemedText>
-          The layout file in <ThemedText type="defaultSemiBold">app/(tabs)/_layout.tsx</ThemedText>{' '}
-          sets up the tab navigator.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/router/introduction">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Android, iOS, and web support">
-        <ThemedText>
-          You can open this project on Android, iOS, and the web. To open the web version, press{' '}
-          <ThemedText type="defaultSemiBold">w</ThemedText> in the terminal running this project.
-        </ThemedText>
-      </Collapsible>
-      <Collapsible title="Images">
-        <ThemedText>
-          For static images, you can use the <ThemedText type="defaultSemiBold">@2x</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">@3x</ThemedText> suffixes to provide files for
-          different screen densities
-        </ThemedText>
-        <Image source={require('@/assets/images/react-logo.png')} style={{ alignSelf: 'center' }} />
-        <ExternalLink href="https://reactnative.dev/docs/images">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Custom fonts">
-        <ThemedText>
-          Open <ThemedText type="defaultSemiBold">app/_layout.tsx</ThemedText> to see how to load{' '}
-          <ThemedText style={{ fontFamily: 'SpaceMono' }}>
-            custom fonts such as this one.
-          </ThemedText>
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/versions/latest/sdk/font">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Light and dark mode components">
-        <ThemedText>
-          This template has light and dark mode support. The{' '}
-          <ThemedText type="defaultSemiBold">useColorScheme()</ThemedText> hook lets you inspect
-          what the user's current color scheme is, and so you can adjust UI colors accordingly.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/develop/user-interface/color-themes/">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Animations">
-        <ThemedText>
-          This template includes an example of an animated component. The{' '}
-          <ThemedText type="defaultSemiBold">components/HelloWave.tsx</ThemedText> component uses
-          the powerful <ThemedText type="defaultSemiBold">react-native-reanimated</ThemedText>{' '}
-          library to create a waving hand animation.
-        </ThemedText>
-        {Platform.select({
-          ios: (
-            <ThemedText>
-              The <ThemedText type="defaultSemiBold">components/ParallaxScrollView.tsx</ThemedText>{' '}
-              component provides a parallax effect for the header image.
-            </ThemedText>
-          ),
-        })}
-      </Collapsible>
-    </ParallaxScrollView>
+      </LinearGradient>
+    </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  headerImage: {
-    color: '#808080',
-    bottom: -90,
-    left: -35,
-    position: 'absolute',
+  backgroundImage: {
+    flex: 1,
+    width: "100%",
+    height: "100%",
   },
-  titleContainer: {
-    flexDirection: 'row',
-    gap: 8,
+  container: {
+    flex: 1,
+  },
+  header: {
+    padding: 20,
+    paddingTop: 40,
+  },
+  headerTitle: {
+    fontSize: 28,
+    fontWeight: "bold",
+    color: "#fff",
+    textAlign: "center",
+  },
+  quizList: {
+    padding: 10,
+  },
+  quizCard: {
+    marginBottom: 15,
+    borderRadius: 10,
+    overflow: "hidden",
+  },
+  cardGradient: {
+    padding: 15,
+  },
+  quizTitle: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#fff",
+    marginBottom: 5,
+  },
+  quizCategory: {
+    fontSize: 16,
+    color: "#e0e0e0",
+    marginBottom: 10,
+  },
+  quizInfo: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-between",
+  },
+  infoItem: {
+    flexDirection: "row",
+    alignItems: "center",
+    marginBottom: 5,
+    marginRight: 10,
+  },
+  infoText: {
+    color: "#fff",
+    marginLeft: 5,
+    fontSize: 14,
   },
 });
