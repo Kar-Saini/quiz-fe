@@ -10,7 +10,7 @@ const quizzes = [
   { id: "5", title: "Tech Genius", category: "Technology" },
 ];
 
-const QuizItem = ({ title, category }) => (
+const QuizItem = ({ title, category }: { title: string; category: string }) => (
   <LinearGradient
     colors={["rgba(255, 255, 255, 0.1)", "rgba(255, 255, 255, 0.05)"]}
     style={styles.quizItem}

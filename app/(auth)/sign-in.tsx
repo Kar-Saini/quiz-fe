@@ -5,194 +5,232 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  KeyboardAvoidingView,
+  StatusBar,
   Platform,
-  ImageBackground,
 } from "react-native";
-import { StatusBar } from "expo-status-bar";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { LinearGradient } from "expo-linear-gradient";
-import { Link } from "expo-router";
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
-export default function SignInScreen() {
+const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
 
-  const handleSignIn = () => {
-    // Implement your sign-in logic here
-    console.log("Sign in with:", email, password);
-  };
-
   return (
-    <ImageBackground
-      source={{
-        uri: "https://images.unsplash.com/photo-1557683316-973673baf926?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2029&q=80",
-      }}
-      style={styles.backgroundImage}
-    >
-      <LinearGradient
-        colors={["rgba(103, 58, 183, 0.7)", "rgba(81, 45, 168, 0.9)"]}
-        style={styles.container}
-      >
-        <StatusBar style="light" />
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-          style={styles.content}
+    <View style={styles.container}>
+      <StatusBar barStyle="dark-content" backgroundColor="#F5F5F5" />
+
+      {/* Header */}
+      <View style={styles.header}>
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => {
+            navigation.navigate("Landing");
+          }}
         >
-          <View style={styles.headerContainer}>
-            <MaterialCommunityIcons
-              name="moon-waning-crescent"
-              size={60}
-              color="#fff"
+          <Icon name="arrow-left" size={24} color="#1F1F1F" />
+        </TouchableOpacity>
+        <Text style={styles.headerTitle}>Login</Text>
+      </View>
+
+      {/* Content */}
+      <View style={styles.content}>
+        {/* Social Login Buttons */}
+        <TouchableOpacity style={styles.googleButton}>
+          <Icon name="google" size={20} color="#1F1F1F" />
+          <Text style={styles.googleButtonText}>Login with Google</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={styles.facebookButton}>
+          <Icon name="facebook" size={20} color="#FFFFFF" />
+          <Text style={styles.facebookButtonText}>Login with Facebook</Text>
+        </TouchableOpacity>
+
+        {/* Divider */}
+        <View style={styles.dividerContainer}>
+          <Text style={styles.dividerText}>OR</Text>
+        </View>
+
+        {/* Email Input */}
+        <Text style={styles.inputLabel}>Email Address</Text>
+        <View style={styles.inputContainer}>
+          <Icon name="email-outline" size={20} color="#666666" />
+          <TextInput
+            style={styles.input}
+            placeholder="Your email address"
+            value={email}
+            onChangeText={setEmail}
+            keyboardType="email-address"
+            autoCapitalize="none"
+          />
+        </View>
+
+        {/* Password Input */}
+        <Text style={styles.inputLabel}>Password</Text>
+        <View style={styles.inputContainer}>
+          <Icon name="lock-outline" size={20} color="#666666" />
+          <TextInput
+            style={styles.input}
+            placeholder="Your password"
+            value={password}
+            onChangeText={setPassword}
+            secureTextEntry={!showPassword}
+          />
+          <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
+            <Icon
+              name={showPassword ? "eye-off-outline" : "eye-outline"}
+              size={20}
+              color="#666666"
             />
-            <Text style={styles.headerText}>Welcome Back</Text>
-          </View>
-          <View style={styles.inputContainer}>
-            <View style={styles.inputWrapper}>
-              <MaterialCommunityIcons
-                name="email-outline"
-                size={24}
-                color="#fff"
-                style={styles.inputIcon}
-              />
-              <TextInput
-                style={styles.input}
-                placeholder="Email"
-                placeholderTextColor="#ccc"
-                value={email}
-                onChangeText={setEmail}
-                keyboardType="email-address"
-                autoCapitalize="none"
-              />
-            </View>
-            <View style={styles.inputWrapper}>
-              <MaterialCommunityIcons
-                name="lock-outline"
-                size={24}
-                color="#fff"
-                style={styles.inputIcon}
-              />
-              <TextInput
-                style={styles.input}
-                placeholder="Password"
-                placeholderTextColor="#ccc"
-                value={password}
-                onChangeText={setPassword}
-                secureTextEntry={!showPassword}
-              />
-              <TouchableOpacity
-                onPress={() => setShowPassword(!showPassword)}
-                style={styles.eyeIcon}
-              >
-                <MaterialCommunityIcons
-                  name={showPassword ? "eye-off-outline" : "eye-outline"}
-                  size={24}
-                  color="#fff"
-                />
-              </TouchableOpacity>
-            </View>
-          </View>
-          <TouchableOpacity style={styles.forgotPassword}>
-            <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
           </TouchableOpacity>
-          <TouchableOpacity style={styles.signInButton} onPress={handleSignIn}>
-            <Text style={styles.signInButtonText}>Sign In</Text>
-          </TouchableOpacity>
-          <View style={styles.signUpContainer}>
-            <Text style={styles.signUpText}>Don't have an account? </Text>
-            <TouchableOpacity>
-              <Link href="/(auth)/sign-up">
-                <Text style={styles.signUpLink}>Sign Up</Text>
-              </Link>
-            </TouchableOpacity>
-          </View>
-        </KeyboardAvoidingView>
-      </LinearGradient>
-    </ImageBackground>
+        </View>
+
+        {/* Login Button */}
+        <TouchableOpacity style={styles.loginButton}>
+          <Text style={styles.loginButtonText}>Login</Text>
+        </TouchableOpacity>
+
+        {/* Forgot Password */}
+        <TouchableOpacity style={styles.forgotPasswordButton}>
+          <Text style={styles.forgotPasswordText}>Forgot password?</Text>
+        </TouchableOpacity>
+
+        {/* Terms */}
+        <Text style={styles.termsText}>
+          By continuing, you agree to the{" "}
+          <Text style={styles.termsLink}>Terms of Services</Text>
+          {" & "}
+          <Text style={styles.termsLink}>Privacy Policy</Text>
+        </Text>
+      </View>
+    </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  backgroundImage: {
-    flex: 1,
-    width: "100%",
-    height: "100%",
-  },
   container: {
+    flex: 1,
+    backgroundColor: "#F5F5F5",
+  },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingTop: Platform.OS === "ios" ? 10 : StatusBar.currentHeight!,
+    paddingHorizontal: 16,
+    paddingBottom: 16,
+  },
+  backButton: {
+    padding: 8,
+  },
+  headerTitle: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    fontSize: 20,
+    fontWeight: "600",
+    marginLeft: 12,
+    color: "#1F1F1F",
   },
   content: {
-    width: "100%",
-    paddingHorizontal: 30,
+    flex: 1,
+    paddingHorizontal: 24,
+    paddingTop: 8,
   },
-  headerContainer: {
-    alignItems: "center",
-    marginBottom: 50,
-  },
-  headerText: {
-    fontSize: 28,
-    fontWeight: "bold",
-    color: "#fff",
-    marginTop: 20,
-  },
-  inputContainer: {
-    width: "100%",
-    marginBottom: 20,
-  },
-  inputWrapper: {
+  googleButton: {
     flexDirection: "row",
     alignItems: "center",
-    backgroundColor: "rgba(255, 255, 255, 0.2)",
-    borderRadius: 25,
-    marginBottom: 15,
-    paddingHorizontal: 15,
+    justifyContent: "center",
+    backgroundColor: "#FFFFFF",
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 16,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 2,
   },
-  inputIcon: {
-    marginRight: 10,
+  googleButtonText: {
+    marginLeft: 12,
+    fontSize: 16,
+    fontWeight: "500",
+    color: "#1F1F1F",
+  },
+  facebookButton: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#1877F2",
+    borderRadius: 12,
+    padding: 16,
+    marginBottom: 24,
+  },
+  facebookButtonText: {
+    marginLeft: 12,
+    fontSize: 16,
+    fontWeight: "500",
+    color: "#FFFFFF",
+  },
+  dividerContainer: {
+    alignItems: "center",
+    marginBottom: 24,
+  },
+  dividerText: {
+    color: "#666666",
+    fontSize: 14,
+  },
+  inputLabel: {
+    fontSize: 14,
+    color: "#1F1F1F",
+    marginBottom: 8,
+  },
+  inputContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    backgroundColor: "#FFFFFF",
+    borderRadius: 12,
+    paddingHorizontal: 16,
+    marginBottom: 16,
   },
   input: {
     flex: 1,
-    color: "#fff",
-    paddingVertical: 15,
+    paddingVertical: 16,
+    marginLeft: 12,
     fontSize: 16,
+    color: "#1F1F1F",
   },
-  eyeIcon: {
-    padding: 10,
+  loginButton: {
+    backgroundColor: "#7755FF",
+    borderRadius: 12,
+    padding: 16,
+    alignItems: "center",
+    marginTop: 8,
   },
-  forgotPassword: {
-    alignSelf: "flex-end",
-    marginBottom: 20,
+  loginButtonText: {
+    color: "#FFFFFF",
+    fontSize: 16,
+    fontWeight: "600",
+  },
+  forgotPasswordButton: {
+    alignItems: "center",
+    marginTop: 16,
+    marginBottom: 24,
   },
   forgotPasswordText: {
-    color: "#fff",
+    color: "#7755FF",
     fontSize: 14,
+    fontWeight: "500",
   },
-  signInButton: {
-    backgroundColor: "#fff",
-    borderRadius: 25,
-    paddingVertical: 15,
-    alignItems: "center",
-    marginBottom: 20,
-  },
-  signInButtonText: {
-    color: "#673AB7",
-    fontSize: 18,
-    fontWeight: "bold",
-  },
-  signUpContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-  },
-  signUpText: {
-    color: "#fff",
+  termsText: {
+    textAlign: "center",
+    color: "#666666",
     fontSize: 14,
+    lineHeight: 20,
   },
-  signUpLink: {
-    color: "#fff",
-    fontSize: 14,
-    fontWeight: "bold",
+  termsLink: {
+    color: "#1F1F1F",
+    fontWeight: "500",
   },
 });
+
+export default LoginScreen;
