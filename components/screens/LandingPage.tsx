@@ -20,7 +20,6 @@ const LoginSignup: React.FC = ({ navigation }) => {
         backgroundColor="transparent"
         translucent
       />
-
       <View style={[styles.circle, styles.circle1]} />
       <View style={[styles.circle, styles.circle2]} />
       <View style={[styles.circle, styles.circle3]} />
@@ -47,7 +46,6 @@ const LoginSignup: React.FC = ({ navigation }) => {
           />
         </View>
 
-        {/* Card */}
         <View style={styles.card}>
           <Text style={styles.cardTitle}>Login or Sign Up</Text>
           <Text style={styles.cardDescription}>
@@ -84,6 +82,7 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
+    justifyContent:"space-between",
     paddingTop: Platform.OS === "ios" ? 40 : StatusBar.currentHeight,
   },
   circle: {
@@ -115,16 +114,15 @@ const styles = StyleSheet.create({
   },
   logoContainer: {
     width: 120,
-    height: 100,
+    height: 140,
     justifyContent: "center",
     alignItems: "center",
     elevation: 8,
   },
   logo: {
     width: 120,
-    height: 100,
+    height: 140,
   },
-
   illustrationContainer: {
     flexDirection: "row",
     justifyContent: "center",
@@ -134,7 +132,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     width: width * 0.9,
-    height: width * 0.7,
+    height: width * 0.9,
   },
   illustrationRight: {
     marginLeft: width * 0.01,

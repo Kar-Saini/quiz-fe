@@ -1,3 +1,4 @@
+import axios from "axios";
 import React, { useState } from "react";
 import {
   View,
@@ -14,6 +15,16 @@ const LoginScreen = ({ navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+
+  function handleLogin(){
+    try {
+      const result  = axios.post("http://localhost:3001/signin", {email, password})
+      navigation.navigate()
+      
+    } catch (error) {
+      
+    }
+  }
 
   return (
     <View style={styles.container}>
@@ -34,22 +45,6 @@ const LoginScreen = ({ navigation }) => {
 
       {/* Content */}
       <View style={styles.content}>
-        {/* Social Login Buttons */}
-        <TouchableOpacity style={styles.googleButton}>
-          <Icon name="google" size={20} color="#1F1F1F" />
-          <Text style={styles.googleButtonText}>Login with Google</Text>
-        </TouchableOpacity>
-
-        <TouchableOpacity style={styles.facebookButton}>
-          <Icon name="facebook" size={20} color="#FFFFFF" />
-          <Text style={styles.facebookButtonText}>Login with Facebook</Text>
-        </TouchableOpacity>
-
-        {/* Divider */}
-        <View style={styles.dividerContainer}>
-          <Text style={styles.dividerText}>OR</Text>
-        </View>
-
         {/* Email Input */}
         <Text style={styles.inputLabel}>Email Address</Text>
         <View style={styles.inputContainer}>
@@ -86,7 +81,7 @@ const LoginScreen = ({ navigation }) => {
 
         {/* Login Button */}
         <TouchableOpacity style={styles.loginButton}>
-          <Text style={styles.loginButtonText}>Login</Text>
+          <Text style={styles.loginButtonText} onPress={handleLogin}>Login</Text>
         </TouchableOpacity>
 
         {/* Forgot Password */}
@@ -204,7 +199,7 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     padding: 16,
     alignItems: "center",
-    marginTop: 8,
+    marginTop: 20,
   },
   loginButtonText: {
     color: "#FFFFFF",

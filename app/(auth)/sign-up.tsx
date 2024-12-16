@@ -9,13 +9,31 @@ import {
   Platform,
 } from "react-native";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import axios from "axios"
+import { configureLayoutAnimationBatch } from "react-native-reanimated/lib/typescript/core";
 
 const SignUpScreen = ({ navigation }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+    phoneNumber: "",
+  });
   const [showPassword, setShowPassword] = useState(false);
 
+  const handleInputChange = (key:string, value:string) => {
+    setFormData((prevState) => ({ ...prevState, [key]: value }));
+  };
+
+  async function handleSignUp(){
+    console.log("Hello")
+    console.log(formData)
+    try {
+      const result = await axios.post("http://192.168.0.1:3002/register", formData);
+      console.log(result);
+    } catch (error) {
+    console.log(error)
+    }
+  }
   return (
     <View style={styles.container}>
       <StatusBar barStyle="dark-content" backgroundColor="#F5F5F5" />
@@ -42,8 +60,8 @@ const SignUpScreen = ({ navigation }) => {
           <TextInput
             style={styles.input}
             placeholder="Your phone number"
-            value={phoneNumber}
-            onChangeText={setPhoneNumber}
+            value={formData.phoneNumber}
+            onChangeText={(text) => handleInputChange("phoneNumber", text)}
             keyboardType="decimal-pad"
             autoCapitalize="none"
           />
@@ -56,8 +74,8 @@ const SignUpScreen = ({ navigation }) => {
           <TextInput
             style={styles.input}
             placeholder="Your email address"
-            value={email}
-            onChangeText={setEmail}
+            value={formData.email}
+            onChangeText={(text) => handleInputChange("email", text)}
             keyboardType="email-address"
             autoCapitalize="none"
           />
@@ -70,8 +88,8 @@ const SignUpScreen = ({ navigation }) => {
           <TextInput
             style={styles.input}
             placeholder="Your password"
-            value={password}
-            onChangeText={setPassword}
+            value={formData.password}
+            onChangeText={(text) => handleInputChange("password", text)}
             secureTextEntry={!showPassword}
           />
           <TouchableOpacity onPress={() => setShowPassword(!showPassword)}>
@@ -85,7 +103,7 @@ const SignUpScreen = ({ navigation }) => {
 
         {/* Login Button */}
         <TouchableOpacity style={styles.loginButton}>
-          <Text style={styles.signupButtonText}>Sign up</Text>
+          <Text style={styles.signupButtonText} onPress={()=>handleSignUp()}>Sign up</Text>
         </TouchableOpacity>
       </View>
     </View>
